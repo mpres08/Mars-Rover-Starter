@@ -12,11 +12,15 @@ describe("Command class", function() {
 
   // TEST 2
   test("constructor sets command type", function() {
-    expect(this.commandType).toEqual(undefined);
+    const command = new Command ("MODE_CHANGE", "MOVE", "STATUS_CHECK");
+    expect(command.commandType).toEqual("MODE_CHANGE", "MOVE", "STATUS_CHECK");
   });
 
   // TEST 3
   test("constructor sets a value passed in as the 2nd argument", function(){
-    expect(this.value).toEqual(undefined);
+    const commandType = "TestCommand";
+    const commandValue = 42;
+    const command = new Command(commandType, commandValue)
+    expect(command.value).toEqual(commandValue);
   });
 });
