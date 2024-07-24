@@ -13,11 +13,14 @@ describe("Message class", function() {
 
     // TEST 5
     test("constructor sets name", function() {
-        expect(this.name).toEqual(undefined);
+        const message = new Message ("Test", []); 
+        expect(message.name).toEqual("Test");
     });
 
     // TEST 6
     test("contains a commands array passed into the constructor as the 2nd argument", function() {
-        expect(this.command).toEqual(undefined);
+        const commands = ["command1", "command2"]
+        const message = new Message ("Test", commands);
+        expect(message.commands).toEqual(commands);
     });
 });
