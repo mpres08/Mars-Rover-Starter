@@ -12,7 +12,7 @@ describe("Command class", function() {
 
   // TEST 2
   test("constructor sets command type", function() {
-    const command = new Command ("MODE_CHANGE", "MOVE", "STATUS_CHECK");
+    const command = new Command("MODE_CHANGE", "MOVE", "STATUS_CHECK");
     expect(command.commandType).toEqual("MODE_CHANGE", "MOVE", "STATUS_CHECK");
   });
 

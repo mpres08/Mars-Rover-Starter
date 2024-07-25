@@ -13,7 +13,7 @@ describe("Rover class", function() {
     const position = "position";
     const mode = "NORMAL";
     const generatorWatts = 110;
-    const rover = new Rover (position, mode, generatorWatts);
+    const rover = new Rover(position, mode, generatorWatts);
     expect(rover.position).toEqual("position")
     expect(rover.mode).toEqual("NORMAL");
     expect(rover.generatorWatts).toEqual(110);
@@ -29,7 +29,16 @@ describe("Rover class", function() {
 
   // TEST 9
   test("response returned by receiveMessage includes two results if two commands are sent in the message", function() {
-    expect()
+    const rover = new Rover(9832, "NORMAL");
+    const commands = ["command1", "command2"];
+    const message = new Message("Test", commands);
+    const response = rover.receiveMessage(message);
+
+    expect(response.results.length).toEqual(2);
+    expect(response.results).toEqual([
+      {completed: true},
+      {completed: true}
+    ]);
   });
 
   // TEST 10
