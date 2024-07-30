@@ -1,8 +1,8 @@
 class Rover {
-   constructor(position, mode, generatorWatts = 110) {
+   constructor(position) {
       this.position = position;
-      this.mode = mode;
-      this.generatorWatts = generatorWatts;
+      this.mode = "NORMAL";
+      this.generatorWatts = 110;
    }
 
    receiveMessage(message) {
@@ -11,7 +11,7 @@ class Rover {
       for(let i = 0; i < message.commands.length; i++) {
          let command = message.commands[i];
 
-         if (command === "STATUS_CHECK") {
+         if (command.commandType === "STATUS_CHECK") {
             results.push({
                completed: true,
                roverStatus: {
@@ -36,7 +36,7 @@ class Rover {
       }
 
       return {
-         messageName: message.name,
+         message: message.name,
          results: results
       };
    }
