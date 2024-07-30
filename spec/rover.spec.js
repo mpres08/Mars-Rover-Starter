@@ -58,10 +58,10 @@ describe("Rover class", function() {
     const rover = new Rover(9832);
     const commands = [{commandType: "MODE_CHANGE", newMode: "LOW_POWER"}];
     const message = new Message("Test", commands);
-    const response = rover.receiveMessage(message);
+    const response = rover.receiveMessage(message).results;
 
-    expect(response.results.length).toEqual(1);
-    expect(response.results[0].completed).toEqual(true);
+    expect(response.length).toEqual(1);
+    expect(response[0].completed).toEqual(true);
     expect(rover.mode).toEqual("LOW_POWER");
   });
 
