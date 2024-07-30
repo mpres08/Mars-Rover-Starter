@@ -40,11 +40,11 @@ describe("Rover class", function() {
   // TEST 10
   test("responds correctly to the status check command", function() {
     const rover = new Rover(9832);
-    const commands = [new Command('STATUS_CHECK'), new Command('MODE_CHANGE', 'LOW_POWER')];
+    const commands = [new Command('STATUS_CHECK')];
     const message = new Message("Test", commands);
-    const response = rover.receiveMessage(message).commands;
+    const response = rover.receiveMessage(message).results;
 
-    expect(response).toEqual(1);
+    expect(response.length).toEqual(1);
     expect(response[0].completed).toEqual(true);
     expect(response[0].roverStatus).toEqual({
       mode: "NORMAL",
@@ -55,7 +55,7 @@ describe("Rover class", function() {
 
   // TEST 11
   test("responds correctly to the mode change command", function() {
-    const rover = new Rover(9832, "NORMAL");
+    const rover = new Rover(9832);
     const commands = [{commandType: "MODE_CHANGE", newMode: "LOW_POWER"}];
     const message = new Message("Test", commands);
     const response = rover.receiveMessage(message);
