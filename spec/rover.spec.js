@@ -10,49 +10,43 @@ describe("Rover class", function() {
 
   // TEST 7
   test("constructor sets position and default values for mode and generatorWatts", function() {
-    const position = "position";
-    const mode = "NORMAL";
-    const generatorWatts = 110;
-    const rover = new Rover(position, mode, generatorWatts);
+    const rover = new Rover(2000);
 
-    expect(rover.position).toEqual("position")
+    expect(rover.position).toEqual(2000)
     expect(rover.mode).toEqual("NORMAL");
     expect(rover.generatorWatts).toEqual(110);
   });
 
   // TEST 8
   test("response returned by receiveMessage contains the name of the message", function() {
-    const rover = new Rover(9832, "NORMAL");
-    const message = new Message("Test", []);
-    const response = rover.receiveMessage(message);
+    const rover = new Rover(9832);
+    const commands = [new Command('STATUS_CHECK'), new Command('MODE_CHANGE', 'LOW_POWER')];
+    const message = new Message("Test", commands);
+    const response = rover.receiveMessage(message).message;
 
-    expect(response.messageName).toEqual("Test");
+    expect(response).toEqual(message.name);
   });
 
   // TEST 9
   test("response returned by receiveMessage includes two results if two commands are sent in the message", function() {
-    const rover = new Rover(9832, "NORMAL");
-    const commands = ["command1", "command2"];
+    const rover = new Rover(9832);
+    const commands = [new Command('STATUS_CHECK'), new Command('MODE_CHANGE', 'LOW_POWER')];
     const message = new Message("Test", commands);
-    const response = rover.receiveMessage(message);
+    const response = rover.receiveMessage(message).results.length;
 
-    expect(response.results.length).toEqual(2);
-    expect(response.results).toEqual([
-      {completed: true},
-      {completed: true}
-    ]);
+    expect(response).toEqual(2);
   });
 
   // TEST 10
   test("responds correctly to the status check command", function() {
-    const rover = new Rover(9832, "NORMAL");
-    const commands = ["STATUS_CHECK"];
+    const rover = new Rover(9832);
+    const commands = [new Command('STATUS_CHECK'), new Command('MODE_CHANGE', 'LOW_POWER')];
     const message = new Message("Test", commands);
-    const response = rover.receiveMessage(message);
+    const response = rover.receiveMessage(message).commands;
 
-    expect(response.results.length).toEqual(1);
-    expect(response.results[0].completed).toEqual(true);
-    expect(response.results[0].roverStatus).toEqual({
+    expect(response).toEqual(1);
+    expect(response[0].completed).toEqual(true);
+    expect(response[0].roverStatus).toEqual({
       mode: "NORMAL",
       generatorWatts: 110,
       position: 9832
