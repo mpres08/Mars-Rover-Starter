@@ -83,7 +83,7 @@ describe("Rover class", function() {
   // TEST 13
   test("responds with the position for the move command", function() {
     const rover = new Rover(9832);
-    const commands = [new Command("MOVE", 9833)];
+    const commands = [{commandType: "MOVE", newPosition: 9833}];
     const message = new Message("Test", commands);
     const response = rover.receiveMessage(message).response.results;
 
