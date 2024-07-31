@@ -68,11 +68,11 @@ describe("Rover class", function() {
   // TEST 12
   test("responds with a false completed value when attempting to move in LOW_POWER mode", function() {
     const rover = new Rover(9832);
-    const commands = [new Command("MOVE", 9833)];
+    const commands = [new Command("MODE_CHANGE", "LOW_POWER"), new Command("MOVE", 9833)];
     const message = new Message("Test", commands);
     const response = rover.receiveMessage(message).results;
 
-    expect(response.length).toEqual(1);
+    expect(rover.mode).toEqual("LOW_POWER");
     expect(response.results[0].completed).toEqual(false);
     expect(rover.position).toEqual(9832);
   });
