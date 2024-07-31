@@ -70,10 +70,10 @@ describe("Rover class", function() {
     const rover = new Rover(9832);
     const commands = [new Command("MODE_CHANGE", "LOW_POWER"), new Command("MOVE", 9833)];
     const message = new Message("Test", commands);
-    const response = rover.receiveMessage(message).results;
+    const response = rover.receiveMessage(message);
 
     expect(rover.mode).toEqual("LOW_POWER");
-    expect(response.results[0].completed).toEqual(false);
+    expect(response.results[0].completed).toBeTrue();
     expect(rover.position).toEqual(9832);
   });
 
