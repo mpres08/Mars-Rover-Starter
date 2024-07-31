@@ -6,13 +6,17 @@ class Rover {
    }
 
    receiveMessage(message) {
-      let results = [];
+      let response = {
+         message: message.name,
+         results: []
+      };
 
       for(let i = 0; i < message.commands.length; i++) {
          let command = message.commands[i];
+         console.log(`Processing command: ${command.commandType} with mode: ${this.mode}`);
 
          if (command.commandType === "STATUS_CHECK") {
-            results.push({
+            response.results.push({
                completed: true,
                roverStatus: {
                   mode: this.mode,
@@ -20,24 +24,23 @@ class Rover {
                   position: this.position
                }
             });
-         } else if (command.commandType === "MODE_CHANGE") {
-            this.mode = command.newMode;
-            results.push({completed: true});
-         } else if (command.commandType === "MOVE") {
+         } else if (message.commands[i].commandType === "MODE_CHANGE") {
+            response.results.push({completed: true});
+         } else if (message.command[i].commandType === "MOVE") {
             if (this.mode === "LOW_POWER") {
-               results.push({completed: false});
+               response.results.push({completed: false});
             } else {
                this.position = command.newPosition;
-               results.push({completed: true});
+               response.results.push({completed: true});
             }
          } else {
-         results.push({completed: true});
+         response.results.push({completed: true});
          }
       }
 
       return {
          message: message.name,
-         results: results
+         response: results
       };
    }
 }
