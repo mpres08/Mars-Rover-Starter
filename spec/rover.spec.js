@@ -32,7 +32,7 @@ describe("Rover class", function() {
     const rover = new Rover(9832);
     const commands = [new Command('STATUS_CHECK'), new Command('MODE_CHANGE', 'LOW_POWER')];
     const message = new Message("Test", commands);
-    const response = rover.receiveMessage(message).results.length;
+    const response = rover.receiveMessage(message).response.results.length;
 
     expect(response).toEqual(2);
   });
@@ -42,7 +42,7 @@ describe("Rover class", function() {
     const rover = new Rover(9832);
     const commands = [new Command('STATUS_CHECK')];
     const message = new Message("Test", commands);
-    const response = rover.receiveMessage(message).results;
+    const response = rover.receiveMessage(message).response.results;
 
     expect(response.length).toEqual(1);
     expect(response[0].completed).toEqual(true);
@@ -58,7 +58,7 @@ describe("Rover class", function() {
     const rover = new Rover(9832);
     const commands = [{commandType: "MODE_CHANGE", newMode: "LOW_POWER"}];
     const message = new Message("Test", commands);
-    const response = rover.receiveMessage(message).results;
+    const response = rover.receiveMessage(message).response.results;
 
     expect(response.length).toEqual(1);
     expect(response[0].completed).toEqual(true);
@@ -68,12 +68,15 @@ describe("Rover class", function() {
   // TEST 12
   test("responds with a false completed value when attempting to move in LOW_POWER mode", function() {
     const rover = new Rover(9832);
-    const commands = [new Command("MODE_CHANGE", "LOW_POWER"), new Command("MOVE", 9833)];
+    const commands = [
+      {commandType: "MODE_CHANGE", newMode: "LOW_POWER"}, 
+      {commandType: "MOVE", newPosition: 9833}
+    ];
     const message = new Message("Test", commands);
-    const response = rover.receiveMessage(message);
+    const response = rover.receiveMessage(message).response.results;
 
     expect(rover.mode).toEqual("LOW_POWER");
-    expect(response.results[0].completed).toBeTrue();
+    expect(response[1].completed).toEqual(false);
     expect(rover.position).toEqual(9832);
   });
 
@@ -82,11 +85,10 @@ describe("Rover class", function() {
     const rover = new Rover(9832);
     const commands = [new Command("MOVE", 9833)];
     const message = new Message("Test", commands);
-    const response = rover.receiveMessage(message).results;
+    const response = rover.receiveMessage(message).response.results;
 
     expect(response.length).toEqual(1);
-    expect(response.results[0].completed).toEqual(true);
+    expect(response[0].completed).toEqual(true);
     expect(rover.position).toEqual(9833);
   });
-
 });
