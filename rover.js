@@ -15,7 +15,7 @@ class Rover {
          let command = message.commands[i];
          console.log(`Processing command: ${command.commandType} with mode: ${this.mode}`);
 
-         if (command.commandType === "STATUS_CHECK") {
+         if (message.commands[i].commandType === "STATUS_CHECK") {
             response.results.push({
                completed: true,
                roverStatus: {
@@ -24,25 +24,21 @@ class Rover {
                   position: this.position
                }
             });
-         } else if (command.commandType === "MODE_CHANGE") {
-            this.mode = command.newMode;
-            response.results.push({completed: true});
-         } else if (command.commandType === "MOVE") {
+         } else if (message.commands[i].commandType === "MODE_CHANGE") {
+            this.mode = message.commands[i].value;
+            response.results.push({completed: true,});
+         } else if (message.commands[i].commandType === "MOVE") {
             if (this.mode === "LOW_POWER") {
-               response.results.push({completed: false});
+               response.results.push({completed: false,});
             } else {
-               this.position = command.newPosition;
-               response.results.push({completed: true});
+               this.position = message.commands[i].value;
+               response.results.push({completed: true,});
             }
          } else {
-         response.results.push({completed: false});
+         response.results.push({completed: true,});
          }
       }
-
-      return {
-         message: message.name,
-         response
-      };
+      return response;
    }
 }
 module.exports = Rover;
